@@ -17,6 +17,8 @@ import net.minecraft.registry.Registries;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemStack;
+
+import net.minecraft.entity.ai.brain.Activity;
     
 public class ExampleMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -37,6 +39,9 @@ public class ExampleMod implements ModInitializer {
 			entries.add(CUSTOM_ITEM);
 		})
 		.build();
+
+	// Create a Villager activity
+	public static final Activity PRAY = Activity.register("pray");
 
 	@Override
 	public void onInitialize() {

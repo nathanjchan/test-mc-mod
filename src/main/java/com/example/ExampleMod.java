@@ -8,10 +8,16 @@ import org.slf4j.LoggerFactory;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.item.ItemStack;
+    
 public class ExampleMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -22,6 +28,15 @@ public class ExampleMod implements ModInitializer {
 	public static final CustomItem CUSTOM_ITEM =
 		Registry.register(Registries.ITEM, new Identifier("tutorial", "custom_item"),
 			new CustomItem(new FabricItemSettings().maxCount(16)));
+
+	// Create an item group
+	private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
+		.icon(() -> new ItemStack(CUSTOM_ITEM))
+		.displayName(Text.translatable("Custom Group"))
+		.entries((context, entries) -> {
+			entries.add(CUSTOM_ITEM);
+		})
+		.build();
 
 	@Override
 	public void onInitialize() {
@@ -34,5 +49,6 @@ public class ExampleMod implements ModInitializer {
 		// Make it furnace fuel or compostable
 		FuelRegistry.INSTANCE.add(CUSTOM_ITEM, 300);
 		CompostingChanceRegistry.INSTANCE.add(CUSTOM_ITEM, 0.3f);
+		Registry.register(Registries.ITEM_GROUP, new Identifier("tutorial", "custom_group"), ITEM_GROUP);
 	}
 }

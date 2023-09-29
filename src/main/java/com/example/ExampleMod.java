@@ -5,11 +5,23 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.util.Identifier;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.Registries;
+
 public class ExampleMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("modid");
+
+	// An instance of our new item
+	public static final CustomItem CUSTOM_ITEM =
+		Registry.register(Registries.ITEM, new Identifier("tutorial", "custom_item"),
+			new CustomItem(new FabricItemSettings().maxCount(16)));
 
 	@Override
 	public void onInitialize() {
@@ -18,5 +30,9 @@ public class ExampleMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+
+		// Make it furnace fuel or compostable
+		FuelRegistry.INSTANCE.add(CUSTOM_ITEM, 300);
+		CompostingChanceRegistry.INSTANCE.add(CUSTOM_ITEM, 0.3f);
 	}
 }
